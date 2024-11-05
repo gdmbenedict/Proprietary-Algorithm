@@ -9,12 +9,31 @@ public class CityGenerator : MonoBehaviour
     [SerializeField] private int widthZ; //size of the generated grid in the Z direction
     [SerializeField] private string seed; //seed used to give the map a desired generation
 
+    [Header("Road Variables")]
+    [SerializeField][Range(0, 100)] private float randomRoadChance; //chance that a column or row on the grid will be a road
+
+    [Header("Residential Variables")]
+    [SerializeField] private int residentialCommercialAttraction; //how attracted is a residential structure to a commercial one
+    [SerializeField] private int residentialIndustrialAttraction; //how attracted is a residential structure to a industrial one
+
+    [Header("Commercial Varaibles")]
+    [SerializeField] private int commercialResidentialAttraction; //how attracted is a commercial structure to a residential one
+    [SerializeField] private int commercialIndustrialAttraction; //how attracted is a commercial structure to a industrial one
+
+    [Header("Industrial Variables")]
+    [SerializeField] private int industrialResidentialAttraction; //how attracted is a industrial structure to a residential one
+    [SerializeField] private int industrialCommercialAttraction; //how attracted is a industrial structure to a commercial one
+
     [Header("Prefabs")]
-    [SerializeField] private GameObject ground;
+    [SerializeField] private GameObject ground; 
     [SerializeField] private GameObject road;
     [SerializeField] private GameObject residential;
     [SerializeField] private GameObject commercial;
     [SerializeField] private GameObject industrial;
+
+    private int totalPopulationScore;
+    private int totalBusinessScore;
+    private int totalInfrastructureScore;
 
     // Start is called before the first frame update
     void Start()
@@ -37,13 +56,13 @@ public class CityGenerator : MonoBehaviour
         }
         else
         {
-
             return widthZ;
         }
     }
 
     private void GenerateTerrain()
     {
+        //loop through every position placing the ground tile
         for (float x = -widthX/2; x<widthX/2; x++)
         {
             for (float z = -widthZ/2; z<widthZ/2; z++)
@@ -56,6 +75,9 @@ public class CityGenerator : MonoBehaviour
 
     private void GenerateRoads()
     {
+        for ()
+        {
 
+        }
     }
 }
