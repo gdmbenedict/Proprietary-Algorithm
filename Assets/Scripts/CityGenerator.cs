@@ -35,10 +35,12 @@ public class CityGenerator : MonoBehaviour
     private int totalBusinessScore;
     private int totalInfrastructureScore;
 
+    private Structure[,] structures;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        structures = new Structure[widthX, widthZ];
     }
 
     // Update is called once per frame
@@ -60,6 +62,7 @@ public class CityGenerator : MonoBehaviour
         }
     }
 
+    //function that generates the terrain that the city-scale sits on
     private void GenerateTerrain()
     {
         //loop through every position placing the ground tile
@@ -73,9 +76,17 @@ public class CityGenerator : MonoBehaviour
         }
     }
 
+    //function that generates the road grid to block out city regions
     private void GenerateRoads()
     {
-        for ()
+        //Adding roads to Z borders
+        for (int x=0; x<widthX; x++)
+        {
+            
+        }
+
+        //Adding roads to X borders
+        for (int z=0; z<widthZ; z++)
         {
 
         }
