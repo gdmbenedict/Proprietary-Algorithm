@@ -10,8 +10,23 @@ public class CityGenerator : MonoBehaviour
     [SerializeField] private string seed; //seed used to give the map a desired generation
 
     [Header("Road Variables")]
-    [SerializeField][Range(0, 100)] private float randomRoadChance; //chance that a column or row on the grid will be a road
+    [SerializeField]
+    [Range(0, 100)] private float randomRoadChance; //chance that a column or row on the grid will be a road
 
+    [Header("Building Variables")]
+    [SerializeField]
+    [Range(1, 5)] private int maxBuildingSize; //maximum size of a building along any side
+    [SerializeField]
+    [Range(1, 25)] private int maxBuldingHeight;
+
+    [Header("Prefabs")]
+    [SerializeField] private GameObject ground; 
+    [SerializeField] private GameObject road;
+    [SerializeField] private GameObject building;
+
+    //Below is code relating to expanded functionality that was not able to be finished
+
+    /*
     [Header("Residential Variables")]
     [SerializeField] private int residentialCommercialAttraction; //how attracted is a residential structure to a commercial one
     [SerializeField] private int residentialIndustrialAttraction; //how attracted is a residential structure to a industrial one
@@ -20,27 +35,26 @@ public class CityGenerator : MonoBehaviour
     [SerializeField] private int commercialResidentialAttraction; //how attracted is a commercial structure to a residential one
     [SerializeField] private int commercialIndustrialAttraction; //how attracted is a commercial structure to a industrial one
 
+    
     [Header("Industrial Variables")]
     [SerializeField] private int industrialResidentialAttraction; //how attracted is a industrial structure to a residential one
     [SerializeField] private int industrialCommercialAttraction; //how attracted is a industrial structure to a commercial one
+    */
 
-    [Header("Prefabs")]
-    [SerializeField] private GameObject ground; 
-    [SerializeField] private GameObject road;
-    [SerializeField] private GameObject residential;
-    [SerializeField] private GameObject commercial;
-    [SerializeField] private GameObject industrial;
+    //[SerializeField] private GameObject residential;
+    //[SerializeField] private GameObject commercial;
+    //[SerializeField] private GameObject industrial;
 
-    private int totalPopulationScore;
-    private int totalBusinessScore;
-    private int totalInfrastructureScore;
+    //private int totalPopulationScore;
+    //private int totalBusinessScore;
+    //private int totalInfrastructureScore;
 
-    private Structure[,] structures;
+    //private Structure[,] structures;
 
     // Start is called before the first frame update
     void Start()
     {
-        structures = new Structure[widthX, widthZ];
+
     }
 
     // Update is called once per frame

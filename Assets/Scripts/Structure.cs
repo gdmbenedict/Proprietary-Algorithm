@@ -87,7 +87,7 @@ public class Structure
     private void GenerateAttributes()
     {
         ApplySize();
-        CalculateResources(GetSize());
+        SetResources(CalculateResources(GetSize()));
     }
 
     //Method that calculates the size of the structure and updates it
