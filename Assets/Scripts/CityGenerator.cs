@@ -1,17 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Analytics;
+using UnityEngine.UIElements;
 
 public class CityGenerator : MonoBehaviour
 {
     [Header("Generation Variables")]
-    [SerializeField] private int widthX; //size of the generated grid in the X direction
-    [SerializeField] private int widthZ; //size of the generated grid in the Z direction
-    [SerializeField] private string seed; //seed used to give the map a desired generation
+    [SerializeField] public int widthX; //size of the generated grid in the X direction
+    [SerializeField] public int widthZ; //size of the generated grid in the Z direction
+    [SerializeField] public string seed; //seed used to give the map a desired generation
 
     [Header("Road Variables")]
     [SerializeField]
-    [Range(0, 100)] private float randomRoadChance; //chance that a column or row on the grid will be a road
+    [Range(0, 1)] private float randomRoadChance; //chance that a column or row on the grid will be a road
 
     [Header("Building Variables")]
     [SerializeField]
@@ -65,10 +67,21 @@ public class CityGenerator : MonoBehaviour
         
     }
 
-    public void GenerateCity()
+    public void GenerateCity(string seed)
     {
+        System.Random rand;
+
+        if (string.IsNullOrEmpty(seed))
+        {
+            rand = new System.Random();
+        }
+        else
+        {
+            rand = new System.Random(seed.GetHashCode());
+        }
+
         GenerateTerrain();
-        GenerateRoads();
+        GenerateRoads(rand);
     }
 
     //function that generates the terrain that the city-scale sits on
@@ -86,26 +99,23 @@ public class CityGenerator : MonoBehaviour
     }
 
     //function that generates the road grid to block out city regions
-    private void GenerateRoads()
+    private void GenerateRoads(System.Random rand)
     {
         int x,z;
-        Vector3 position;
+        bool spawnRoad;
 
-        //Adding roads to Z borders
+        //Adding roads to Z axis
         for (x=0; x<widthX; x++)
         {
             //top row
             z = 0;
             structures[z,x] = new Road();
-            position = new Vector3(x - widthX / 2, 0, z - widthZ / 2);
-            Instantiate(road, position, Quaternion.identity);
+            SpawnRoad(z, x);
 
             //bottom row
             z = widthZ-1;
             structures[z, x] = new Road();
-            position = new Vector3(x - widthX / 2, 0, z - widthZ / 2);
-            Instantiate(road, position, Quaternion.identity);
-
+            SpawnRoad(z, x); 
         }
 
         //Adding roads to X borders
@@ -114,15 +124,62 @@ public class CityGenerator : MonoBehaviour
             //top row
             x = 0;
             structures[z, x] = new Road();
-            position = new Vector3(x - widthX / 2, 0, z - widthZ / 2);
-            Instantiate(road, position, Quaternion.identity);
+            SpawnRoad(z, x);
 
             //bottom row
             x = widthZ-1;
             structures[z, x] = new Road();
-            position = new Vector3(x - widthX / 2, 0, z - widthZ / 2);
-            Instantiate(road, position, Quaternion.identity);
+            SpawnRoad(z, x);    
         }
+
+        //spawning x aligned roads
+        for (x = 0; x < widthX; x++)
+        {
+            spawnRoad = (float)rand.NextDouble() < randomRoadChance;
+            if (!spawnRoad) continue;
+
+            if (x - 1 >= 0 && x + 1 < widthX)
+            {
+                //check for adjacent roads
+                if (structures[1, x - 1] != null) continue;
+                if (structures[1, x + 1] != null) continue;
+
+            }
+
+            for (z = 1; z < widthZ - 1; z++)
+            {
+                structures[z, x] = new Road();
+                SpawnRoad(z, x);
+            }
+
+            spawnRoad = false;
+        }
+
+        
+        //spawning z aligned roads
+        for (z = 0; z < widthX; z++)
+        {
+            spawnRoad = (float)rand.NextDouble() < randomRoadChance;
+            if (!spawnRoad) continue;
+
+            if (z - 1 >= 0 && z + 1 < widthZ)
+            {
+                //check for adjacent roads
+                if (structures[z - 1, 1] != null) continue;
+                if (structures[z + 1, 1] != null) continue;
+
+            }
+
+            for (x = 1; x < widthX - 1; x++)
+            {
+                if (structures[z,x] != null) continue;
+                structures[z, x] = new Road();
+                SpawnRoad(z, x);
+            }
+
+            spawnRoad = false;
+        }
+        
     }
 
     //function that returns the largest side of the generated city
@@ -142,5 +199,12 @@ public class CityGenerator : MonoBehaviour
     public int GetMaxHeight()
     {
         return maxBuildingHeight;
+    }
+
+    private void SpawnRoad(float z, float x)
+    {
+        Vector3 position;
+        position = new Vector3(x - widthX / 2, 0, z - widthZ / 2);
+        Instantiate(road, position, Quaternion.identity);
     }
 }

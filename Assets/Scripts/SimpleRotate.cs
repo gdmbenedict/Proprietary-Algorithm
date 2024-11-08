@@ -4,15 +4,12 @@ using UnityEngine;
 
 public class SimpleRotate : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] private float rotationSpeed;
 
     // Update is called once per frame
     void Update()
     {
-        
+        float rotation = rotationSpeed * Time.deltaTime;
+        transform.Rotate(new Vector3(0, rotationSpeed, 0));
     }
 }

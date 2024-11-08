@@ -12,7 +12,7 @@ public class SimManager : MonoBehaviour
     {
         Vector2 targetCamPos = new Vector2(cityGenerator.GetLargestSide(), cityGenerator.GetMaxHeight());
         StartCoroutine(cameraManager.moveCameraToPosition(targetCamPos));
-        cityGenerator.GenerateCity();
+        cityGenerator.GenerateCity(cityGenerator.seed);
     }
 
     // Update is called once per frame

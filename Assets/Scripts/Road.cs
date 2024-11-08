@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Road : CityUnit
 {
-    public Road() : base(CityUnitType.road, 0)
+    public Road() : base(CityUnitType.road, 0, 1, 1)
     {
 
     }

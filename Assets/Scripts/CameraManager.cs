@@ -62,7 +62,7 @@ public class CameraManager : MonoBehaviour
             transform.position = Vector3.Lerp(startPos, targetPos, t);
             
             timer += Time.deltaTime;
-            Debug.Log("Movement Change still being called");
+            //Debug.Log("Movement Change still being called");
             yield return null;
         }
 

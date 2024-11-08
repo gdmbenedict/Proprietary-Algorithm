@@ -12,21 +12,33 @@ public abstract class CityUnit
 
     private CityUnitType unitType; // type of structure in the city block
     private int height; // the height of the structure in the city block
+    private int lengthX; //the size of the structure in the city block in the x direction
+    private int lengthZ; //the size of the structure in the city block in the z direction
 
-    public CityUnit(CityUnitType unitType, int height)
+    public CityUnit(CityUnitType unitType, int height, int lengthX, int lengthZ)
     {
         this.unitType = unitType;
         this.height = height;
+        this.lengthX = lengthX;
+        this.lengthZ = lengthZ;
     }
 
+    //function that returns the type of the city unity
     public CityUnitType GetCityUnitType()
     {
         return unitType;
     }
 
+    //function that returns the height of the structure
     public int GetHeight()
     {
         return height;
+    }
+
+    //Function that returns the size of the structure in a vector2
+    public int[] GetSize()
+    {
+        return new int[2] {lengthZ, lengthX};
     }
     
 }
