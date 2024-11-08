@@ -76,7 +76,7 @@ public class CityGenerator : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        structures = new CityUnit[widthZ, widthX];
+        
     }
 
     // Update is called once per frame
@@ -88,6 +88,8 @@ public class CityGenerator : MonoBehaviour
     //Function that generates city
     public void GenerateCity(string seed)
     {
+        structures = new CityUnit[widthZ, widthX];
+
         //clearing previous generation
         foreach (Transform child in visualsHolder)
         {
