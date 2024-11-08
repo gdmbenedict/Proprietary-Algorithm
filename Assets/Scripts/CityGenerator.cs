@@ -17,12 +17,14 @@ public class CityGenerator : MonoBehaviour
     [SerializeField]
     [Range(1, 5)] private int maxBuildingSize; //maximum size of a building along any side
     [SerializeField]
-    [Range(1, 25)] private int maxBuldingHeight;
+    [Range(1, 25)] private int maxBuildingHeight;
 
     [Header("Prefabs")]
     [SerializeField] private GameObject ground; 
     [SerializeField] private GameObject road;
     [SerializeField] private GameObject building;
+
+    private CityUnit[,] structures;
 
     //Below is code relating to expanded functionality that was not able to be finished
 
@@ -52,9 +54,9 @@ public class CityGenerator : MonoBehaviour
     //private Structure[,] structures;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-
+        structures = new CityUnit[widthZ, widthX];
     }
 
     // Update is called once per frame
@@ -63,17 +65,10 @@ public class CityGenerator : MonoBehaviour
         
     }
 
-    //function that returns the largest side of the generated city
-    public int GetLargestSide()
+    public void GenerateCity()
     {
-        if (widthX > widthZ)
-        {
-            return widthX;
-        }
-        else
-        {
-            return widthZ;
-        }
+        GenerateTerrain();
+        GenerateRoads();
     }
 
     //function that generates the terrain that the city-scale sits on
@@ -93,16 +88,59 @@ public class CityGenerator : MonoBehaviour
     //function that generates the road grid to block out city regions
     private void GenerateRoads()
     {
+        int x,z;
+        Vector3 position;
+
         //Adding roads to Z borders
-        for (int x=0; x<widthX; x++)
+        for (x=0; x<widthX; x++)
         {
-            
+            //top row
+            z = 0;
+            structures[z,x] = new Road();
+            position = new Vector3(x - widthX / 2, 0, z - widthZ / 2);
+            Instantiate(road, position, Quaternion.identity);
+
+            //bottom row
+            z = widthZ-1;
+            structures[z, x] = new Road();
+            position = new Vector3(x - widthX / 2, 0, z - widthZ / 2);
+            Instantiate(road, position, Quaternion.identity);
+
         }
 
         //Adding roads to X borders
-        for (int z=0; z<widthZ; z++)
+        for (z=0; z<widthZ; z++)
         {
+            //top row
+            x = 0;
+            structures[z, x] = new Road();
+            position = new Vector3(x - widthX / 2, 0, z - widthZ / 2);
+            Instantiate(road, position, Quaternion.identity);
 
+            //bottom row
+            x = widthZ-1;
+            structures[z, x] = new Road();
+            position = new Vector3(x - widthX / 2, 0, z - widthZ / 2);
+            Instantiate(road, position, Quaternion.identity);
         }
+    }
+
+    //function that returns the largest side of the generated city
+    public int GetLargestSide()
+    {
+        if (widthX > widthZ)
+        {
+            return widthX;
+        }
+        else
+        {
+            return widthZ;
+        }
+    }
+
+    //function that returns the max height of buildings in the cityscape
+    public int GetMaxHeight()
+    {
+        return maxBuildingHeight;
     }
 }
