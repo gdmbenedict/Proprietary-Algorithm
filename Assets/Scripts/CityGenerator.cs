@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.Analytics;
 using UnityEngine.UIElements;
@@ -107,6 +108,7 @@ public class CityGenerator : MonoBehaviour
         GenerateTerrain();
         GenerateRoads(rand);
         GenerateBuildings(rand);
+        GrowBuildings(rand);
 
         /*
         foreach (CityUnit cityUnit in structures)
@@ -258,7 +260,7 @@ public class CityGenerator : MonoBehaviour
                     }
                 }
 
-                Debug.Log(sizeZ + "," + sizeX);
+                //Debug.Log(sizeZ + "," + sizeX);
                 building = new Building(sizeZ, sizeX);
 
                 //setting building in structures
@@ -273,6 +275,81 @@ public class CityGenerator : MonoBehaviour
                 //spawning visual for building
                 SpawnBuilding(z, x, sizeZ, sizeX, 1);
             }
+        }
+    }
+
+    private void GrowBuildings(System.Random rand)
+    {
+        List<CityUnit> buildings = new List<CityUnit>();
+        bool[,] growthArray = new bool[widthZ, widthX];
+        bool hasGrown = true;
+        int heightTarget = 1;
+        int height;
+        int z, x;
+        int[] size;
+
+        while (hasGrown)
+        {
+            //Debug.Log("Growth Cycle: " + heightTarget);
+
+            //reseting loop variables
+            buildings.Clear();
+            hasGrown = false;
+            for (x = 1; x < widthX - 1; x++)
+            {
+                for (z = 1; z < widthZ - 1; z++)
+                {
+                    growthArray[z, x] = false;
+                }
+            }
+
+            //check for growth
+            for (x = 1; x < widthX - 1; x++)
+            {
+                for (z = 1; z < widthZ - 1; z++)
+                {
+                    //pass if structure is null
+                    if (structures[z, x] == null) continue;
+
+                    //pass if structure is not a building
+                    if (structures[z,x].GetCityUnitType() != CityUnit.CityUnitType.building) continue;
+                    //Debug.Log("Passed First Check");
+
+                    //pass if structure is has already been called
+                    if (buildings.Contains(structures[z, x])) continue;
+                    //Debug.Log("Passed Second Check");
+
+                    //pass if structure is not the right height
+                    if (structures[z, x].GetHeight() != heightTarget) continue;
+                    //Debug.Log("Passed Third Check");
+
+                    buildings.Add(structures[z, x]);
+                    if (TryGrow(z, x, rand))
+                    {
+                        growthArray[z,x] = true;
+                    }
+                }
+            }
+
+            //apply growth
+            for (x = 1; x < widthX - 1; x++)
+            {
+                for (z = 1; z < widthZ - 1; z++)
+                {
+                    //Debug.Log(growthArray[z, x]);
+
+                    if (growthArray[z, x])
+                    {
+                        structures[z, x].Grow();
+                        size = structures[z, x].GetSize();
+                        height = structures[z, x].GetHeight();
+                        SpawnBuilding(z, x, size[0], size[1], height);
+                        hasGrown = true;
+                    }
+                }
+            }
+
+            heightTarget++; 
         }
     }
 
@@ -296,7 +373,8 @@ public class CityGenerator : MonoBehaviour
         if (lengthZ == 1 && lengthX == 1)
         {
             position = new Vector3(x - widthX / 2, height - 1, z - widthZ / 2);
-            Instantiate(building1x1, position, Quaternion.identity);
+            instance = Instantiate(building1x1, position, Quaternion.identity);
+            instance.transform.parent = visualsHolder.transform;
         }
         else
         {
@@ -440,7 +518,7 @@ public class CityGenerator : MonoBehaviour
 
                         //send debug message that an incorrect value was reached
                         default:
-                            Debug.Log("Incorrect calculation of orientation: " + orientation);
+                            //Debug.Log("Incorrect calculation of orientation: " + orientation);
                             break;
                     }
                 }
@@ -452,7 +530,7 @@ public class CityGenerator : MonoBehaviour
     private bool TryExpand(bool xAxis, int x, int z, System.Random rand)
     {
         //randomly decide if can expand through random generation
-        if (!((float)rand.NextDouble() < buildingExpandChance)) return false;
+        if ((float)rand.NextDouble() > buildingExpandChance) return false;
 
         //determine which axis to expand on
         if (xAxis)
@@ -469,6 +547,41 @@ public class CityGenerator : MonoBehaviour
         }
     }
 
+    //function that checks if the building can grow
+    private bool TryGrow(int z, int x, System.Random rand)
+    {
+        //check if building is at max height
+        if (structures[z, x].GetHeight() >= maxBuildingHeight) return false;
+
+        //randomly decide if can expand through random generation
+        if ((float)rand.NextDouble() > buildingGrowChance) return false;
+
+        int count = 0;
+
+        for (int i = -buildingCheckSize; i<=buildingCheckSize; i++)
+        {
+            for (int j = -buildingCheckSize; j <= buildingCheckSize; j++)
+            {
+                //check boundaries
+                if (z + j < 0 || z + j >= widthX) continue;
+                if (x + i < 0 || x + i >= widthZ) continue;
+
+                //don't count empty space
+                if (structures[z + j, x + i] == null) continue;
+
+                //remove self from equation
+                if (i == 0 && j == 0) continue;
+
+                //increase count
+                if (structures[z+j, x+i].GetHeight() == structures[z, x].GetHeight()) count++;
+            }
+        }
+
+        if(count < buildingGrowRequirement) return false;
+        else return true;
+    }
+
+    //function that checks if position is beside a road
     private bool IsBesideRoad(int z, int x)
     {
         //check right

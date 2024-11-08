@@ -10,6 +10,6 @@ public class SimpleRotate : MonoBehaviour
     void Update()
     {
         float rotation = rotationSpeed * Time.deltaTime;
-        transform.Rotate(new Vector3(0, rotationSpeed, 0));
+        transform.Rotate(new Vector3(0, rotation, 0));
     }
 }

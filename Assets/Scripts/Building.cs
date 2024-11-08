@@ -5,7 +5,7 @@ using static CityUnit;
 
 public class Building : CityUnit
 {
-    public Building(int lengthZ, int lengthX) : base(CityUnitType.road, 1, lengthZ, lengthX)
+    public Building(int lengthZ, int lengthX) : base(CityUnitType.building, 1, lengthZ, lengthX)
     {
 
     }

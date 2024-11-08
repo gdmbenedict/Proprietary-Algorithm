@@ -209,7 +209,7 @@ Transform:
   m_GameObject: {fileID: 597714842}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.4690018, y: 4.33764, z: -4.1922016}
+  m_LocalPosition: {x: 0, y: 1, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -262,16 +262,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   visualsHolder: {fileID: 959014619}
-  widthX: 10
-  widthZ: 10
+  widthX: 100
+  widthZ: 100
   seed: 
-  randomRoadChance: 0.5
+  randomRoadChance: 0.35
   maxBuildingSize: 5
   maxBuildingHeight: 10
   buildingExpandChance: 0.5
-  buildingGrowChance: 0
-  buildingGrowRequirement: 0
-  buildingCheckSize: 1
+  buildingGrowChance: 0.75
+  buildingGrowRequirement: 5
+  buildingCheckSize: 3
   ground: {fileID: 2858995747713928483, guid: b8a5686d0ef673f44a62ba2ab5099eda, type: 3}
   road: {fileID: 1074391765881068767, guid: 84b645589f4f25c40af694d6ba1ecc72, type: 3}
   buildingCorner: {fileID: 6849243296694723986, guid: 0a7ee3c47dfe35e45ad91ec5c7b62308, type: 3}
@@ -304,6 +304,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 959014619}
+  - component: {fileID: 959014620}
   m_Layer: 0
   m_Name: VisualsHolder
   m_TagString: Untagged
@@ -326,6 +327,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &959014620
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 959014618}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89433314f259fd747b744809acc51a2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rotationSpeed: 15
 --- !u!1 &1419908974
 GameObject:
   m_ObjectHideFlags: 0
@@ -475,7 +489,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1782642091}
-  - component: {fileID: 1782642090}
   m_Layer: 0
   m_Name: CameraHolder
   m_TagString: Untagged
@@ -483,19 +496,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1782642090
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1782642089}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 89433314f259fd747b744809acc51a2c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rotationSpeed: 0
 --- !u!4 &1782642091
 Transform:
   m_ObjectHideFlags: 0
@@ -505,7 +505,7 @@ Transform:
   m_GameObject: {fileID: 1782642089}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.4690018, y: -3.3376398, z: -5.8077984}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
