@@ -18,6 +18,10 @@ public class SimManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        //Regenerate city scape on space bar down
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            cityGenerator.GenerateCity(cityGenerator.seed);
+        }
     }
 }

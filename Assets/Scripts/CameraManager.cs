@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class CameraManager : MonoBehaviour
 {
@@ -14,7 +15,11 @@ public class CameraManager : MonoBehaviour
     [Range(0f, 1f)] private float HBSP; //Horizontal Buffer Space Percentage
     [SerializeField]
     [Range(0f, 1f)] private float VBSP; //Verticle Buffer Space Percentage
-    [SerializeField] private float minHeight = 10f;
+    [SerializeField]
+    [Range(1f, 4f)] private float H2VR = 2f;//Horizontal to Verticle Ratio 
+    //[SerializeField] private float minHeight = 10f;
+    [SerializeField] private Transform lookAtTarget;
+    [SerializeField] private float rotationSpeed = 10f;
 
     private float currentRotation;
     private bool rotatingCamera = false;
@@ -29,8 +34,11 @@ public class CameraManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        currentRotation = Mathf.SmoothDampAngle(currentRotation, viewingAngle, ref rotationVelocity, transitionTime);
-        transform.rotation = Quaternion.Euler(currentRotation, 0f, 0f);
+        transform.LookAt(lookAtTarget);
+        transform.Translate(Vector3.right * rotationSpeed * Time.deltaTime);
+
+        //currentRotation = Mathf.SmoothDampAngle(currentRotation, viewingAngle, ref rotationVelocity, transitionTime);
+        //transform.rotation = Quaternion.Euler(currentRotation, 0f, 0f);
     }
 
     public void SetViewingAngle(float targetAngle)
@@ -46,9 +54,9 @@ public class CameraManager : MonoBehaviour
         float targetPosZ = position.x * (1 + HBSP); //multiply with percentage wanted for the buffer zone
         float targetPosY = position.y * (1 + VBSP); //multiply with percentage wanted for the buffer zone
 
-        if (targetPosY < minHeight)
+        if (position.y < position.x)
         {
-            targetPosY = minHeight;
+            targetPosY = position.x/H2VR * (1 + VBSP);
         }
 
         Vector3 targetPos = new Vector3(0, targetPosY, -targetPosZ);

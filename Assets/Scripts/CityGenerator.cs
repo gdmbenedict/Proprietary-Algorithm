@@ -91,7 +91,7 @@ public class CityGenerator : MonoBehaviour
         //clearing previous generation
         foreach (Transform child in visualsHolder)
         {
-            Destroy(child);
+            Destroy(child.gameObject);
         }
         
         System.Random rand;

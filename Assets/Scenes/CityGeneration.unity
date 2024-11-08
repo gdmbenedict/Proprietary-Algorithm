@@ -213,7 +213,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1782642091}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &597714846
 MonoBehaviour:
@@ -228,10 +228,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   transitionTime: 2.5
-  viewingAngle: 45
+  viewingAngle: 25
   HBSP: 0.3
-  VBSP: 0.3
-  minHeight: 10
+  VBSP: 0
+  H2VR: 2
+  lookAtTarget: {fileID: 959014619}
 --- !u!1 &649625374
 GameObject:
   m_ObjectHideFlags: 0
@@ -262,12 +263,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   visualsHolder: {fileID: 959014619}
-  widthX: 100
-  widthZ: 100
+  widthX: 50
+  widthZ: 50
   seed: 
   randomRoadChance: 0.35
   maxBuildingSize: 5
-  maxBuildingHeight: 10
+  maxBuildingHeight: 25
   buildingExpandChance: 0.5
   buildingGrowChance: 0.75
   buildingGrowRequirement: 5
@@ -304,7 +305,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 959014619}
-  - component: {fileID: 959014620}
   m_Layer: 0
   m_Name: VisualsHolder
   m_TagString: Untagged
@@ -327,19 +327,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &959014620
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 959014618}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 89433314f259fd747b744809acc51a2c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rotationSpeed: 15
 --- !u!1 &1419908974
 GameObject:
   m_ObjectHideFlags: 0
@@ -480,38 +467,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1782642089
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1782642091}
-  m_Layer: 0
-  m_Name: CameraHolder
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1782642091
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1782642089}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 597714845}
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -519,5 +474,5 @@ SceneRoots:
   - {fileID: 1554164571}
   - {fileID: 1419908976}
   - {fileID: 649625376}
-  - {fileID: 1782642091}
   - {fileID: 959014619}
+  - {fileID: 597714845}
