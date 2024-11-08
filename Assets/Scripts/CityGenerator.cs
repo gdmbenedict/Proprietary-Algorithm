@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using UnityEngine;
 using UnityEngine.Analytics;
 using UnityEngine.UIElements;
@@ -24,7 +25,10 @@ public class CityGenerator : MonoBehaviour
     [Header("Prefabs")]
     [SerializeField] private GameObject ground; 
     [SerializeField] private GameObject road;
-    [SerializeField] private GameObject building;
+    [SerializeField] private GameObject buildingCorner;
+    [SerializeField] private GameObject buildingWall;
+    [SerializeField] private GameObject buildingCenter;
+    [SerializeField] private GameObject building1x1;
 
     private CityUnit[,] structures;
 
@@ -201,10 +205,122 @@ public class CityGenerator : MonoBehaviour
         return maxBuildingHeight;
     }
 
+    //function that spawns a road visual from map position
     private void SpawnRoad(float z, float x)
     {
         Vector3 position;
         position = new Vector3(x - widthX / 2, 0, z - widthZ / 2);
         Instantiate(road, position, Quaternion.identity);
+    }
+
+    //function that spawns a building visual from a map position
+    private void spawnBuilding(int z, int x, int lengthZ, int lengthX, int height)
+    {
+        Vector3 position;
+
+        //check if building is 1x1
+        if (lengthZ == 1 && lengthX == 1)
+        {
+            position = new Vector3(x - widthX / 2, height, z - widthZ / 2);
+            Instantiate(building1x1, position, Quaternion.identity);
+        }
+        else
+        {
+            int orientation;
+            Quaternion rotation;
+
+            for (int i=z; i<z+lengthZ; i++)
+            {
+                for (int j=x; j<x+lengthX; j++)
+                {
+                    //setting position
+                    position = new Vector3(j - widthX / 2, height, i - widthZ / 2);
+
+                    //resetting orientation
+                    orientation = 0;
+
+                    //determining orientation using truth table
+                    if (j + 1 < lengthX) {
+                        orientation += 1;
+                    }
+                    if (j - 1 > x)
+                    {
+                        orientation += 2;
+                    }
+                    if (i + 1 < lengthZ)
+                    {
+                        orientation += 4;
+                    }
+                    if (i -1 > z)
+                    {
+                        orientation += 8;
+                    }
+
+                    //using orientation to spawn visual in right position
+                    switch (orientation)
+                    {
+                        //bottom left corner
+                        case 5:
+                            rotation = Quaternion.Euler(0, 0, 0);
+                            Instantiate(buildingCorner, position, rotation);
+                            break;
+
+                        //bottom right corner
+                        case 6:
+                            rotation = Quaternion.Euler(0, 270, 0);
+                            Instantiate(buildingCorner, position, rotation);
+                            break;
+
+                        //bottom wall
+                        case 7:
+                            rotation = Quaternion.Euler(0, 0, 0);
+                            Instantiate(buildingWall, position, rotation);
+                            break;
+                        
+                        //top left corner
+                        case 9:
+                            rotation = Quaternion.Euler(0, 90, 0);
+                            Instantiate(buildingCorner, position, rotation);
+                            break;
+
+                        //top right corner
+                        case 10:
+                            rotation = Quaternion.Euler(0, 180, 0);
+                            Instantiate(buildingCorner, position, rotation);
+                            break;
+
+                        //top wall
+                        case 11:
+                            rotation = Quaternion.Euler(0, 180, 0);
+                            Instantiate(buildingWall, position, rotation);
+                            break;
+
+                        //left wall
+                        case 13:
+                            rotation = Quaternion.Euler(0, 90, 0);
+                            Instantiate(buildingWall, position, rotation);
+                            break;
+
+                        //right wall
+                        case 14:
+                            rotation = Quaternion.Euler(0, 270, 0);
+                            Instantiate(buildingWall, position, rotation);
+                            break;
+
+                        //middle section
+                        case 15:
+                            rotation = Quaternion.Euler(0, 0, 0);
+                            Instantiate(buildingCenter, position, rotation);
+                            break;
+
+                        default:
+                            Debug.Log("Incorrect calculation of orientation");
+                            break;
+                    }
+                }
+            }
+        }
+
+
     }
 }
