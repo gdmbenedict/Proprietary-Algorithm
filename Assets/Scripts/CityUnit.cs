@@ -15,12 +15,19 @@ public abstract class CityUnit
     private int lengthX; //the size of the structure in the city block in the x direction
     private int lengthZ; //the size of the structure in the city block in the z direction
 
+    //Constructor method
     public CityUnit(CityUnitType unitType, int height, int lengthX, int lengthZ)
     {
         this.unitType = unitType;
         this.height = height;
         this.lengthX = lengthX;
         this.lengthZ = lengthZ;
+    }
+
+    //function that increases the height of structure in city block by 1
+    public void Grow()
+    {
+        height++;
     }
 
     //function that returns the type of the city unity
