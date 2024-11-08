@@ -16,7 +16,7 @@ public abstract class CityUnit
     private int lengthZ; //the size of the structure in the city block in the z direction
 
     //Constructor method
-    public CityUnit(CityUnitType unitType, int height, int lengthX, int lengthZ)
+    public CityUnit(CityUnitType unitType, int height, int lengthZ, int lengthX)
     {
         this.unitType = unitType;
         this.height = height;

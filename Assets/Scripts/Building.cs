@@ -1,18 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static CityUnit;
 
-public class Building : MonoBehaviour
+public class Building : CityUnit
 {
-    // Start is called before the first frame update
-    void Start()
+    public Building(int lengthZ, int lengthX) : base(CityUnitType.road, 1, lengthZ, lengthX)
     {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }
