@@ -371,158 +371,157 @@ public class CityGenerator : MonoBehaviour
         Vector3 position;
         GameObject instance;
 
-        //check if building is 1x1
-        if (lengthZ == 1 && lengthX == 1)
-        {
-            position = new Vector3(x - widthX / 2, height - 1, z - widthZ / 2);
-            instance = Instantiate(building1x1, position, Quaternion.identity);
-            instance.transform.parent = visualsHolder.transform;
-        }
-        else
-        {
-            int orientation;
-            Quaternion rotation;
 
-            for (int i=z; i<z+lengthZ; i++)
+        int orientation;
+        Quaternion rotation;
+
+        for (int i=z; i<z+lengthZ; i++)
+        {
+            for (int j=x; j<x+lengthX; j++)
             {
-                for (int j=x; j<x+lengthX; j++)
+                //setting position
+                position = new Vector3(j - widthX / 2, height - 1, i - widthZ / 2);
+
+                //resetting orientation
+                orientation = 0;
+
+                //determining orientation using truth table
+                if (j + 1 < x + lengthX) {
+                    orientation += 1;
+                }
+                if (j - 1 >= x)
                 {
-                    //setting position
-                    position = new Vector3(j - widthX / 2, height - 1, i - widthZ / 2);
+                    orientation += 2;
+                }
+                if (i + 1 < z + lengthZ)
+                {
+                    orientation += 4;
+                }
+                if (i -1 >= z)
+                {
+                    orientation += 8;
+                }
 
-                    //resetting orientation
-                    orientation = 0;
+                //using orientation to spawn visual in right position
+                switch (orientation)
+                {
+                    //1x1
+                    case 0:
+                        rotation = Quaternion.Euler(0, 0, 0);
+                        position = new Vector3(x - widthX / 2, height - 1, z - widthZ / 2);
+                        instance = Instantiate(building1x1, position, Quaternion.identity);
+                        instance.transform.parent = visualsHolder.transform;
+                        break;
+                        
+                    //left end
+                    case 1:
+                        rotation = Quaternion.Euler(0, 90, 0);
+                        instance = Instantiate(buildingEnd, position, rotation);
+                        instance.transform.parent = visualsHolder.transform;
+                        break;
 
-                    //determining orientation using truth table
-                    if (j + 1 < x + lengthX) {
-                        orientation += 1;
-                    }
-                    if (j - 1 >= x)
-                    {
-                        orientation += 2;
-                    }
-                    if (i + 1 < z + lengthZ)
-                    {
-                        orientation += 4;
-                    }
-                    if (i -1 >= z)
-                    {
-                        orientation += 8;
-                    }
+                    //right end
+                    case 2:
+                        rotation = Quaternion.Euler(0, 270, 0);
+                        instance = Instantiate(buildingEnd, position, rotation);
+                        instance.transform.parent = visualsHolder.transform;
+                        break;
 
-                    //using orientation to spawn visual in right position
-                    switch (orientation)
-                    {
-                        //left end
-                        case 1:
-                            rotation = Quaternion.Euler(0, 90, 0);
-                            instance = Instantiate(buildingEnd, position, rotation);
-                            instance.transform.parent = visualsHolder.transform;
-                            break;
+                    //right-left connector
+                    case 3:
+                        rotation = Quaternion.Euler(0, 90, 0);
+                        instance = Instantiate(buildingConnector, position, rotation);
+                        instance.transform.parent = visualsHolder.transform;
+                        break;
 
-                        //right end
-                        case 2:
-                            rotation = Quaternion.Euler(0, 270, 0);
-                            instance = Instantiate(buildingEnd, position, rotation);
-                            instance.transform.parent = visualsHolder.transform;
-                            break;
+                    //bottom end
+                    case 4:
+                        rotation = Quaternion.Euler(0, 0, 0);
+                        instance = Instantiate(buildingEnd, position, rotation);
+                        instance.transform.parent = visualsHolder.transform;
+                        break;
 
-                        //right-left connector
-                        case 3:
-                            rotation = Quaternion.Euler(0, 90, 0);
-                            instance = Instantiate(buildingConnector, position, rotation);
-                            instance.transform.parent = visualsHolder.transform;
-                            break;
+                    //bottom left corner
+                    case 5:
+                        rotation = Quaternion.Euler(0, 0, 0);
+                        instance = Instantiate(buildingCorner, position, rotation);
+                        instance.transform.parent = visualsHolder.transform;
+                        break;
 
-                        //bottom end
-                        case 4:
-                            rotation = Quaternion.Euler(0, 0, 0);
-                            instance = Instantiate(buildingEnd, position, rotation);
-                            instance.transform.parent = visualsHolder.transform;
-                            break;
+                    //bottom right corner
+                    case 6:
+                        rotation = Quaternion.Euler(0, 270, 0);
+                        instance = Instantiate(buildingCorner, position, rotation);
+                        instance.transform.parent = visualsHolder.transform;
+                        break;
 
-                        //bottom left corner
-                        case 5:
-                            rotation = Quaternion.Euler(0, 0, 0);
-                            instance = Instantiate(buildingCorner, position, rotation);
-                            instance.transform.parent = visualsHolder.transform;
-                            break;
+                    //bottom wall
+                    case 7:
+                        rotation = Quaternion.Euler(0, 0, 0);
+                        instance = Instantiate(buildingWall, position, rotation);
+                        instance.transform.parent = visualsHolder.transform;
+                        break;
 
-                        //bottom right corner
-                        case 6:
-                            rotation = Quaternion.Euler(0, 270, 0);
-                            instance = Instantiate(buildingCorner, position, rotation);
-                            instance.transform.parent = visualsHolder.transform;
-                            break;
+                    //top end
+                    case 8:
+                        rotation = Quaternion.Euler(0, 180, 0);
+                        instance = Instantiate(buildingEnd, position, rotation);
+                        instance.transform.parent = visualsHolder.transform;
+                        break;
 
-                        //bottom wall
-                        case 7:
-                            rotation = Quaternion.Euler(0, 0, 0);
-                            instance = Instantiate(buildingWall, position, rotation);
-                            instance.transform.parent = visualsHolder.transform;
-                            break;
+                    //top left corner
+                    case 9:
+                        rotation = Quaternion.Euler(0, 90, 0);
+                        instance = Instantiate(buildingCorner, position, rotation);
+                        instance.transform.parent = visualsHolder.transform;
+                        break;
 
-                        //top end
-                        case 8:
-                            rotation = Quaternion.Euler(0, 180, 0);
-                            instance = Instantiate(buildingEnd, position, rotation);
-                            instance.transform.parent = visualsHolder.transform;
-                            break;
+                    //top right corner
+                    case 10:
+                        rotation = Quaternion.Euler(0, 180, 0);
+                        instance = Instantiate(buildingCorner, position, rotation);
+                        instance.transform.parent = visualsHolder.transform;
+                        break;
 
-                        //top left corner
-                        case 9:
-                            rotation = Quaternion.Euler(0, 90, 0);
-                            instance = Instantiate(buildingCorner, position, rotation);
-                            instance.transform.parent = visualsHolder.transform;
-                            break;
+                    //top wall
+                    case 11:
+                        rotation = Quaternion.Euler(0, 180, 0);
+                        instance = Instantiate(buildingWall, position, rotation);
+                        instance.transform.parent = visualsHolder.transform;
+                        break;
 
-                        //top right corner
-                        case 10:
-                            rotation = Quaternion.Euler(0, 180, 0);
-                            instance = Instantiate(buildingCorner, position, rotation);
-                            instance.transform.parent = visualsHolder.transform;
-                            break;
+                    //up-down connector
+                    case 12:
+                        rotation = Quaternion.Euler(0, 0, 0);
+                        instance = Instantiate(buildingConnector, position, rotation);
+                        instance.transform.parent = visualsHolder.transform;
+                        break;
 
-                        //top wall
-                        case 11:
-                            rotation = Quaternion.Euler(0, 180, 0);
-                            instance = Instantiate(buildingWall, position, rotation);
-                            instance.transform.parent = visualsHolder.transform;
-                            break;
+                    //left wall
+                    case 13:
+                        rotation = Quaternion.Euler(0, 90, 0);
+                        instance = Instantiate(buildingWall, position, rotation);
+                        instance.transform.parent = visualsHolder.transform;
+                        break;
 
-                        //up-down connector
-                        case 12:
-                            rotation = Quaternion.Euler(0, 0, 0);
-                            instance = Instantiate(buildingConnector, position, rotation);
-                            instance.transform.parent = visualsHolder.transform;
-                            break;
+                    //right wall
+                    case 14:
+                        rotation = Quaternion.Euler(0, 270, 0);
+                        instance = Instantiate(buildingWall, position, rotation);
+                        instance.transform.parent = visualsHolder.transform;
+                        break;
 
-                        //left wall
-                        case 13:
-                            rotation = Quaternion.Euler(0, 90, 0);
-                            instance = Instantiate(buildingWall, position, rotation);
-                            instance.transform.parent = visualsHolder.transform;
-                            break;
+                    //middle section
+                    case 15:
+                        rotation = Quaternion.Euler(0, 0, 0);
+                        instance = Instantiate(buildingCenter, position, rotation);
+                        instance.transform.parent = visualsHolder.transform;
+                        break;
 
-                        //right wall
-                        case 14:
-                            rotation = Quaternion.Euler(0, 270, 0);
-                            instance = Instantiate(buildingWall, position, rotation);
-                            instance.transform.parent = visualsHolder.transform;
-                            break;
-
-                        //middle section
-                        case 15:
-                            rotation = Quaternion.Euler(0, 0, 0);
-                            instance = Instantiate(buildingCenter, position, rotation);
-                            instance.transform.parent = visualsHolder.transform;
-                            break;
-
-                        //send debug message that an incorrect value was reached
-                        default:
-                            //Debug.Log("Incorrect calculation of orientation: " + orientation);
-                            break;
-                    }
+                    //send debug message that an incorrect value was reached
+                    default:
+                        //Debug.Log("Incorrect calculation of orientation: " + orientation);
+                        break;
                 }
             }
         }
